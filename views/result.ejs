@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hair Care Result</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#0f172a] text-white min-h-screen font-sans">
+  <div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4 text-cyan-400">Hello, <%= username %>!</h1>
+    <p class="text-lg mb-8">Your Personalized Hair Care Recommendations</p>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="bg-red-200 text-red-800 p-4 rounded-md mb-6 font-semibold">
+        <p><strong>Error:</strong> <%= error %></p>
+      </div>
+    <% } else { %>
+
+      <% if (ingredients && ingredients.length) { %>
+        <div class="space-y-4 mb-6">
+          <% ingredients.forEach(ingredient => { %>
+            <div class="bg-slate-800 p-4 rounded shadow">
+              <p class="text-cyan-300 font-bold capitalize"><%= ingredient %></p>
+              <p class="text-sm text-slate-300">
+                <span class="italic text-cyan-400">How to Use:</span>
+                <%= instructions && instructions[ingredient] ? instructions[ingredient] : 'No specific instructions available.' %>
+              </p>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <% if (washFrequency) { %>
+        <div class="bg-slate-800 p-4 rounded shadow mb-6">
+          <h2 class="text-cyan-300 font-bold mb-1">Recommended Hair Wash Frequency</h2>
+          <p class="text-slate-200"><%= washFrequency %></p>
+        </div>
+      <% } %>
+
+      <% if (tips && tips.length) { %>
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold mb-2 text-cyan-300">Personalized Tips</h2>
+          <ul class="list-disc list-inside text-slate-200 space-y-1">
+            <% tips.forEach(tip => { %>
+              <li><%= tip %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <% if (resources && resources.length) { %>
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold mb-2 text-cyan-300">Additional Resources</h2>
+          <ul class="list-disc list-inside text-slate-200 space-y-1">
+            <% resources.forEach(resource => { %>
+              <li>
+                <span class="font-medium text-cyan-400"><%= resource.name %></span> - <%= resource.type %>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <% if (rawResponse) { %>
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold mb-2 text-yellow-400">Debug - Raw Response</h2>
+          <pre class="bg-slate-900 text-xs text-gray-300 p-4 rounded overflow-x-auto whitespace-pre-wrap"><%= JSON.stringify(rawResponse, null, 2) %></pre>
+        </div>
+      <% } %>
+
+      <% if (pdfPath) { %>
+        <div class="mb-6">
+          <a href="<%= pdfPath %>" target="_blank" class="inline-block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-semibold">
+            Download Care Plan (PDF)
+          </a>
+        </div>
+      <% } %>
+
+    <% } %>
+
+    <div class="flex justify-between mt-8">
+      <a href="/survey" class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-md">Go Back to Survey</a>
+      <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">Logout</a>
+    </div>
+  </div>
+</body>
+</html>

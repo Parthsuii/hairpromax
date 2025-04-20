@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hair Care Survey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center pt-24">
+    <%- include("partials/header") %>
+
+    <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-2xl">
+        <h2 class="text-3xl font-bold text-cyan-400 mb-6 text-center">Hair Care Survey</h2>
+        <% if (error) { %>
+            <div class="bg-red-200 text-red-800 p-4 rounded-md mb-6">
+                <%= error %>
+            </div>
+        <% } %>
+        <form method="POST" class="space-y-6">
+            <div>
+                <label class="block mb-2">Hair Type</label>
+                <select name="hairType" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="dry">Dry</option>
+                    <option value="oily">Oily</option>
+                    <option value="normal">Normal</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2">Hair Texture</label>
+                <select name="hairTexture" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="straight">Straight</option>
+                    <option value="wavy">Wavy</option>
+                    <option value="curly">Curly</option>
+                    <option value="oily">Oily</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2">Hair Porosity</label>
+                <select name="porosity" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2">Scalp Condition</label>
+                <select name="scalpCondition" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="healthy">Healthy</option>
+                    <option value="dry">Dry</option>
+                    <option value="oily">Oily</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2">Scalp Issues (if any)</label>
+                <select name="scalpIssues" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="none">None</option>
+                    <option value="dandruff">Dandruff</option>
+                    <option value="itchiness">Itchiness</option>
+                    <option value="sensitivity">Sensitivity</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2">Do you use commercial hair products?</label>
+                <select name="productUse" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="regularly">Yes, regularly</option>
+                    <option value="occasionally">Sometimes</option>
+                    <option value="rarely">Rarely or never</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2">Do you use heat styling tools?</label>
+                <select name="heatStyling" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="rarely">Rarely or never</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2">How often do you wash your hair?</label>
+                <select name="washingFrequency" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="daily">Daily</option>
+                    <option value="2-3 times a week">2-3 times a week</option>
+                    <option value="once a week">Once a week</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2">Hair Goal</label>
+                <select name="hairGoals" class="w-full bg-gray-700 p-3 rounded-lg">
+                    <option value="shine">Shiny Hair</option>
+                    <option value="growth">Hair Growth</option>
+                    <option value="strength">Stronger Hair</option>
+                    <option value="volume">More Volume</option>
+                    <option value="scalp health">Healthy Scalp</option>
+                </select>
+            </div>
+            <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 rounded-lg">Submit</button>
+        </form>
+        <div class="mt-6 text-right">
+            <a href="/logout" class="text-red-400 hover:underline">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!-- views/partials/header.ejs -->
+<header class="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-cyan-600 to-blue-600 text-white p-4 shadow-md flex justify-between items-center">
+  <div class="text-xl font-bold flex items-center gap-2">
+    <span class="text-2xl">💧</span> HairCare <span class="text-white font-extrabold">Pro</span>
+  </div>
+  <nav class="space-x-4 text-white">
+    <% if (typeof user !== 'undefined' && user) { %>
+      <a href="/survey" class="hover:underline">Survey</a>
+      <a href="/result" class="hover:underline">Result</a>
+      <a href="/logout" class="hover:underline text-red-300">Logout</a>
+    <% } else { %>
+      <a href="/login" class="hover:underline">Login</a>
+      <a href="/register" class="hover:underline">Register</a>
+    <% } %>
+  </nav>
+</header>
