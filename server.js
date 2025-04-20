@@ -7,7 +7,7 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
 const validator = require("validator");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcrypt");
 const { generateCarePlanFetch } = require("./gemini-fetch");
 
 // Suppress Mongoose strictQuery warning
@@ -52,10 +52,8 @@ app.get("/register", (req, res) =>
 );
 app.get("/survey", (req, res) => {
   if (!req.session.user) {
-    console.log("No session found, redirecting to login");
     return res.redirect("/login");
   }
-  console.log("Survey session:", req.session.user);
   res.render("survey", {
     user: req.session.user,
     username: req.session.user.username,
@@ -109,7 +107,6 @@ app.post("/login", async (req, res) => {
       username: user.username,
       email: user.email,
     };
-    console.log("Session set:", req.session.user);
     res.redirect("/survey");
   } else {
     res.render("login", {
@@ -121,17 +118,15 @@ app.post("/login", async (req, res) => {
 
 app.post("/survey", async (req, res) => {
   if (!req.session.user) {
-    console.log("No session found, redirecting to login");
     return res.redirect("/login");
   }
 
   const surveyData = req.body;
-  console.log("Sending request to Gemini API...");
   const carePlan = await generateCarePlanFetch(
     surveyData,
     process.env.GEMINI_API_KEY
   );
-  console.log("Raw Gemini response:", JSON.stringify(carePlan, null, 2));
+
   const userId = req.session.user._id;
 
   const carePlanDoc = new CarePlan({ userId, surveyData, carePlan });
@@ -143,7 +138,6 @@ app.post("/survey", async (req, res) => {
 
   if (!fs.existsSync(path.join(__dirname, "tmp", "pdfs"))) {
     fs.mkdirSync(path.join(__dirname, "tmp", "pdfs"), { recursive: true });
-    console.log("Created tmp/pdfs directory");
   }
 
   const pdf = new PDFDocument();
@@ -157,36 +151,13 @@ app.post("/survey", async (req, res) => {
   pdf.moveDown();
 
   // Handle different ingredient formats
-  console.log(
-    "Ingredients data before PDF:",
-    JSON.stringify(carePlan.ingredients, null, 2)
-  );
-  if (carePlan.ingredients && Array.isArray(carePlan.ingredients)) {
-    if (
-      carePlan.ingredients.length > 0 &&
-      typeof carePlan.ingredients[0] === "object" &&
-      "name" in carePlan.ingredients[0]
-    ) {
-      // Format 1: Array of objects with name and howToUse
-      carePlan.ingredients.forEach((ing) => {
-        const name = ing.name || "Unknown Ingredient";
-        const howToUse = ing.howToUse || "No instructions available";
-        pdf.text(`- ${name}: ${howToUse}`);
-      });
-    } else {
-      // Format 2: Array of strings with instructions object
-      carePlan.ingredients.forEach((ing) => {
-        const name = ing || "Unknown Ingredient";
-        const howToUse =
-          carePlan.instructions?.[ing] || "No instructions available";
-        pdf.text(`- ${name}: ${howToUse}`);
-      });
-    }
+  if (Array.isArray(carePlan.ingredients)) {
+    carePlan.ingredients.forEach((ing) => {
+      const name = ing.name || "Unknown Ingredient";
+      const howToUse = ing.howToUse || "No instructions available";
+      pdf.text(`- ${name}: ${howToUse}`);
+    });
   } else {
-    console.warn(
-      "Ingredients is not an array or is undefined:",
-      carePlan.ingredients
-    );
     pdf.text("- No ingredients available");
   }
 
@@ -208,7 +179,6 @@ app.post("/survey", async (req, res) => {
   });
 
   if (!req.session.user.email || !validator.isEmail(req.session.user.email)) {
-    console.error("Invalid or missing email in session:", req.session.user);
     return res.render("survey", {
       username: req.session.user.username,
       error: "Invalid or missing email. Please re-login or contact support.",
@@ -272,4 +242,4 @@ const sendEmailWithAttachment = async (email, username, filePath) => {
   await transporter.sendMail(mailOptions);
 };
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+app.listen(3001, () => console.log("Server running on port 3001"));
