@@ -7,7 +7,7 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
 const validator = require("validator");
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');
 const { generateCarePlanFetch } = require("./gemini-fetch");
 
 // Suppress Mongoose strictQuery warning
